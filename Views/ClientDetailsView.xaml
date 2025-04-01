@@ -1,0 +1,113 @@
+﻿<Window x:Class="InvestmentCompany.Views.ClientDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Мой профиль" Height="1034" Width="1466"
+        Background="{DynamicResource MaterialDesignPaper}">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Информация о клиенте -->
+        <materialDesign:Card Grid.Row="0" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Информация о клиенте" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
+
+                <Label Content="Название:" Style="{StaticResource MaterialDesignLabel}" />
+                <TextBox Text="{Binding ТекущийКлиент.Название}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True" Margin="0,5,0,10"/>
+
+                <Label Content="Адрес:" Style="{StaticResource MaterialDesignLabel}" />
+                <TextBox Text="{Binding ТекущийКлиент.Адрес}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True" Margin="0,5,0,10"/>
+
+                <Label Content="Телефон:" Style="{StaticResource MaterialDesignLabel}" />
+                <TextBox Text="{Binding ТекущийКлиент.Телефон}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True" Margin="0,5,0,10"/>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Общая информация о портфеле -->
+        <materialDesign:Card Grid.Row="1" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Общая информация о портфеле" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="Стоимость портфеля:" Style="{StaticResource MaterialDesignLabel}"/>
+                        <TextBox Text="{Binding ОбщаяСтоимостьПортфеля}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <Label Content="Вложено:" Style="{StaticResource MaterialDesignLabel}"/>
+                        <TextBox Text="{Binding ВложенныеСредства}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <Label Content="Прибыль:" Style="{StaticResource MaterialDesignLabel}"/>
+                        <TextBox Text="{Binding Прибыль}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3">
+                        <Label Content="Доходность:" Style="{StaticResource MaterialDesignLabel}"/>
+                        <TextBox Text="{Binding Доходность}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <Label Content="Пассивный доход:" Style="{StaticResource MaterialDesignLabel}"/>
+                        <TextBox Text="{Binding ПассивныйДоход}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Таблица активов -->
+        <materialDesign:Card Grid.Row="2" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Активы портфеля" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding АктивыПортфеля}" Style="{StaticResource MaterialDesignDataGrid}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Название}" />
+                        <DataGridTextColumn Header="Стоимость/Вложено" Binding="{Binding СтоимостьВложено}" />
+                        <DataGridTextColumn Header="Доход" Binding="{Binding Доход}" />
+                        <DataGridTextColumn Header="Доля" Binding="{Binding Доля}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Диаграмма доходности портфелей -->
+        <materialDesign:Card Grid.Row="3" Margin="0,0,0,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Доходность портфелей" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
+                <lvc:CartesianChart Series="{Binding ДоходностьПортфелей}" LegendLocation="Right">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Портфели" Labels="{Binding НазванияПортфелей}" />
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Доходность (%)" />
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Диаграмма распределения активов -->
+        <materialDesign:Card Grid.Row="4" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Распределение активов" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
+                <lvc:PieChart Series="{Binding РаспределениеАктивов}" LegendLocation="Right" />
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
+</Window>
