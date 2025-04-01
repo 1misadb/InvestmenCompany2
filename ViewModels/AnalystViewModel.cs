@@ -30,12 +30,11 @@ namespace InvestmentCompany.ViewModels
 
         private void ЗагрузитьДанные()
         {
-            // Загрузка данных из базы данных
             var портфели = _context.Портфели
                 .Include(p => p.АктивыПортфеля)
                 .ThenInclude(a => a.ЦеннаяБумага)
-                .ThenInclude(s => s.SecuritySecurityTypes)
-                .ThenInclude(sst => sst.SecurityType)
+                .ThenInclude(s => s.ТипыЦенныхБумаг)
+                .ThenInclude(sst => sst.ТипЦеннойБумаги)
                 .ToList();
 
             // Заполнение данных для диаграмм
@@ -53,7 +52,7 @@ namespace InvestmentCompany.ViewModels
             // Заполнение данных для диаграммы распределения активов по типам
             var типыАктивов = портфели
                 .SelectMany(p => p.АктивыПортфеля)
-                .GroupBy(a => a.ЦеннаяБумага.SecuritySecurityTypes.FirstOrDefault()?.SecurityType.Тип)
+                .GroupBy(a => a.ЦеннаяБумага.ТипыЦенныхБумаг.FirstOrDefault()?.ТипЦеннойБумаги.Тип)
                 .Where(t => t.Key != null)
                 .Select(g => new { Тип = g.Key, Доля = g.Count() });
 
@@ -79,8 +78,8 @@ namespace InvestmentCompany.ViewModels
             var портфели = _context.Портфели
                 .Include(p => p.АктивыПортфеля)
                 .ThenInclude(a => a.ЦеннаяБумага)
-                .ThenInclude(s => s.SecuritySecurityTypes)
-                .ThenInclude(sst => sst.SecurityType)
+                .ThenInclude(s => s.ТипыЦенныхБумаг)
+                .ThenInclude(sst => sst.ТипЦеннойБумаги)
                 .ToList();
 
             // Заполнение данных для диаграммы доходности портфелей
@@ -98,7 +97,7 @@ namespace InvestmentCompany.ViewModels
             // Заполнение данных для диаграммы распределения активов по типам
             var типыАктивов = портфели
                 .SelectMany(p => p.АктивыПортфеля)
-                .GroupBy(a => a.ЦеннаяБумага.SecuritySecurityTypes.FirstOrDefault()?.SecurityType.Тип)
+                .GroupBy(a => a.ЦеннаяБумага.ТипыЦенныхБумаг.FirstOrDefault()?.ТипЦеннойБумаги.Тип)
                 .Where(t => t.Key != null)
                 .Select(g => new { Тип = g.Key, Доля = g.Count() });
 

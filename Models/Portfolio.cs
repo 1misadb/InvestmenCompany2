@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InvestmenCompany.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace InvestmenCompany.Models
+public class Portfolio
 {
-    public class Portfolio
-    {
-        [Key]
-        public Guid ID_Портфеля { get; set; } = Guid.NewGuid();
+    [Key]
+    public Guid ID_Портфеля { get; set; } = Guid.NewGuid();
 
-        public Guid ID_Клиента { get; set; } // Внешний ключ на Клиента
+    public Guid ID_Клиента { get; set; } // Внешний ключ на Клиента
+    public string НазваниеПортфеля { get; set; }
+    public DateTime ДатаСоздания { get; set; }
 
-        public string НазваниеПортфеля { get; set; }
-        public DateTime ДатаСоздания { get; set; }
+    // Навигационные свойства
+    public Client Клиент { get; set; }
+    public ICollection<PortfolioAsset> АктивыПортфеля { get; set; } = new List<PortfolioAsset>();
 
-        // Навигационное свойство для клиента
-        public Client Клиент { get; set; }
-
-        // Навигационное свойство для активов портфеля
-        public ICollection<PortfolioAsset> АктивыПортфеля { get; set; } = new List<PortfolioAsset>();
-    }
+    // Добавьте связь с типами портфелей (многие-ко-многим)
+    public ICollection<PortfolioPortfolioType> ТипыПортфелей { get; set; } = new List<PortfolioPortfolioType>();
 }

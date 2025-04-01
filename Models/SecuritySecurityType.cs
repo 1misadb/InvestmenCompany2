@@ -10,7 +10,8 @@ namespace InvestmenCompany.Models
         public Guid ID_ЦеннойБумаги { get; set; }
         public Guid ID_ТипаЦеннойБумаги { get; set; }
 
-        // Навигационное свойство для связи с SecurityType
-        public SecurityType SecurityType { get; set; }
+        // Навигационные свойства
+        public Security ЦеннаяБумага { get; set; }
+        public SecurityType ТипЦеннойБумаги { get; set; }
     }
 }

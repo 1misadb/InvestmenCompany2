@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvestmenCompany.Models
 {
@@ -12,9 +13,27 @@ namespace InvestmenCompany.Models
         public string Рейтинг { get; set; }
         public decimal ДоходностьЗаПрошлыйГод { get; set; }
         public decimal МинимальнаяСуммаСделки { get; set; }
-        public Guid ID_Эмитента { get; set; } // Внешний ключ на Эмитента
+        public Guid ID_Эмитента { get; set; }
 
-        // Навигационное свойство для связи с SecuritySecurityType
-        public ICollection<SecuritySecurityType> SecuritySecurityTypes { get; set; } = new List<SecuritySecurityType>();
+
+        public virtual ICollection<SecuritySecurityType> ТипыЦенныхБумаг { get; set; } = new List<SecuritySecurityType>();
+        public virtual ICollection<PortfolioAsset> АктивыПортфеля { get; set; }
+        [NotMapped] // Указывает EF не маппить это свойство в БД
+        public decimal ТекущаяКотировка
+        {
+            get
+            {
+                // Логика получения последней котировки из истории
+                if (ИсторияКотировок != null && ИсторияКотировок.Any())
+                {
+                    return ИсторияКотировок.OrderByDescending(h => h.Дата).First().Котировка;
+                }
+                return 0;
+            }
+            set { /* можно оставить пустым */ }
+        }
+
+        // Добавьте навигационное свойство для истории котировок
+        public virtual ICollection<QuoteHistory> ИсторияКотировок { get; set; } = new List<QuoteHistory>();
     }
 }

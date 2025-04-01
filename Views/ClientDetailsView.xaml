@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Мой профиль" Height="1034" Width="1466"
+        Title="Мой профиль" Height="1000" Width="1466"
         Background="{DynamicResource MaterialDesignPaper}">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -44,29 +44,36 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- В разделе "Общая информация о портфеле" -->
+
                     <StackPanel Grid.Column="0">
                         <Label Content="Стоимость портфеля:" Style="{StaticResource MaterialDesignLabel}"/>
-                        <TextBox Text="{Binding ОбщаяСтоимостьПортфеля}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                        <TextBox Text="{Binding ОбщаяСтоимостьПортфеля, StringFormat={}{0:N4}}" 
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1">
                         <Label Content="Вложено:" Style="{StaticResource MaterialDesignLabel}"/>
-                        <TextBox Text="{Binding ВложенныеСредства}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                        <TextBox Text="{Binding ВложенныеСредства, StringFormat={}{0:N4}}" 
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
                         <Label Content="Прибыль:" Style="{StaticResource MaterialDesignLabel}"/>
-                        <TextBox Text="{Binding Прибыль}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                        <TextBox Text="{Binding Прибыль, StringFormat={}{0:N4}}" 
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="3">
                         <Label Content="Доходность:" Style="{StaticResource MaterialDesignLabel}"/>
-                        <TextBox Text="{Binding Доходность}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                        <TextBox Text="{Binding Доходность, StringFormat={}{0:N4}}" 
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="4">
                         <Label Content="Пассивный доход:" Style="{StaticResource MaterialDesignLabel}"/>
-                        <TextBox Text="{Binding ПассивныйДоход}" Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
+                        <TextBox Text="{Binding ПассивныйДоход, StringFormat={}{0:N4}}" 
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}" IsReadOnly="True"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -76,12 +83,17 @@
         <materialDesign:Card Grid.Row="2" Margin="0,0,0,10" Padding="10">
             <StackPanel>
                 <TextBlock Text="Активы портфеля" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Margin="0,0,0,10"/>
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding АктивыПортфеля}" Style="{StaticResource MaterialDesignDataGrid}">
+                <DataGrid AutoGenerateColumns="False" 
+                         ItemsSource="{Binding ТекущийКлиент.Портфели[0].АктивыПортфеля}" 
+                         Style="{StaticResource MaterialDesignDataGrid}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Название" Binding="{Binding Название}" />
-                        <DataGridTextColumn Header="Стоимость/Вложено" Binding="{Binding СтоимостьВложено}" />
-                        <DataGridTextColumn Header="Доход" Binding="{Binding Доход}" />
-                        <DataGridTextColumn Header="Доля" Binding="{Binding Доля}" />
+                        <DataGridTextColumn Header="Название" Binding="{Binding ЦеннаяБумага.Название}" />
+                        <DataGridTextColumn Header="Стоимость" 
+                          Binding="{Binding ЦеннаяБумага.ТекущаяКотировка, StringFormat={}{0:N4}}" />
+                        <DataGridTextColumn Header="Доходность" 
+                          Binding="{Binding ДоходностьАктива, StringFormat={}{0}%}" />
+                        <DataGridTextColumn Header="Доля" 
+                          Binding="{Binding ДоляАктива, StringFormat={}{0}%}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
